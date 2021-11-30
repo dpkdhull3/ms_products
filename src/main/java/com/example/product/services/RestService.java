@@ -26,11 +26,11 @@ public class RestService {
     public Object addProductToElastic(String productId,ElasticProduct elasticProduct) {
     	HttpHeaders headers = new HttpHeaders();
     	headers.set("Content-Type", "application/json");      
-    	headers.setBasicAuth("root", "Dpk1@gmail");
+    	headers.setBasicAuth("root", "Dpk1@elastic");
     	HttpEntity<Object> request = new HttpEntity<>(elasticProduct, headers);
 
     	
-    	String OPEN_SEARCH_DOMAIN_ENDPOINT_PRODUCTS = "https://search-deepaktestdomain-72z6yjuf6kb47i5x2pd2hpcmzu.ap-south-1.es.amazonaws.com/products/_doc/" + productId;
+    	String OPEN_SEARCH_DOMAIN_ENDPOINT_PRODUCTS = "https://search-ecommerce-elastic-7lwzjckl34fgylx7btdtjrgnie.ap-south-1.es.amazonaws.com/products/_doc/" + productId;
         Object serverResponse =  this.restTemplate.postForObject(OPEN_SEARCH_DOMAIN_ENDPOINT_PRODUCTS, request, Object.class);
         log.info("server response ",serverResponse);
         return serverResponse;

@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.product.aws.SNSSender;
 import com.example.product.entities.ElasticProduct;
 import com.example.product.entities.Product;
 import com.example.product.repositories.ProductRepository;
@@ -23,6 +24,9 @@ public class ProductService {
 	private ProductSequenceGeneratorService nextSequenceService;
 	@Autowired
 	private RestService restService;
+	
+	@Autowired
+	private SNSSender snsSender;
 
 	public Product saveProduct(Product product) {
 		String id = nextSequenceService.getNextSequence("customSequences").toString();
@@ -31,6 +35,7 @@ public class ProductService {
 		product.setProductId(id);
 		String elastricResponse = this.restService.addProductToElastic(id,ep).toString();
 		// log.info("elastic",elastricResponse);
+		this.snsSender.publishMessageToTopic(product);
 		return productRepository.save(product);
 	}
 	
